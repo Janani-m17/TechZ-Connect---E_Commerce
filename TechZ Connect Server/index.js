@@ -3,6 +3,7 @@ const app = express();
 const productRoutes = require("./routes/productRoutes")
 const mongoose = require("mongoose")
 const userRoutes = require("./routes/userRoutes")
+const cartRoutes = require("./routes/cartRoutes");
 
 mongoose.connect(
     "mongodb://localhost:27017/TechZ_Connect_DB"
@@ -14,6 +15,7 @@ mongoose.connect(
 app.use(express.json())
 app.use('/products',productRoutes);
 app.use('/user',userRoutes);
+app.use('/cart',cartRoutes);
 
 app.listen(3000, () => {
     console.log("Server running at port 3000");
