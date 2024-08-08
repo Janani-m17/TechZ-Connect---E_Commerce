@@ -62,3 +62,36 @@ exports.getCart = async(req,res) => {
 		res.status(500).json({message: "Server Error ", error})
 	}
 }
+
+exports.deleteCart = async(req, res) => {
+
+	const {user_id} = req.user;
+	const product_id = req.params.id;
+	
+	try{
+
+	const cart = await Cart.findOne({user_id});
+	if(!cart)
+		return res.status(404).json({message: "Cart not found"});
+
+	const product = cart.products.find(
+		(product) => product.product_id === product_id)
+	if(!product)
+		return res.status(404).json({message:"Product not found"})
+    
+	if(cart.products.length <= 1){
+		await cart.deleteOne({user_id})
+		return res.status(200).json({message: "Cart is empty therefore deleted."})
+	}
+	else{
+	const product = cart.products.filter(
+			(product) => product.product_id !== product_id
+		)
+	cart.products=product
+	await cart.save();
+	res.status(200).json({message: "Product deleted successfully"})
+	}
+} catch(error) {
+	res.status(500).json({message: "Server Error"})
+}
+}
