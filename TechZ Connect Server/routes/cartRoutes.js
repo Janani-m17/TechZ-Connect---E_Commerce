@@ -5,5 +5,6 @@ const auth = require("../middlewares/auth");
 const router = express.Router();
 
 router.post("/addtocart",auth,cartController.createCart);
+router.get("/getcart",auth,cartController.getCart);
 
 module.exports = router;
