@@ -67,7 +67,7 @@ exports.deleteCart = async(req, res) => {
 
 	const {user_id} = req.user;
 	const product_id = req.params.id;
-	
+
 	try{
 
 	const cart = await Cart.findOne({user_id});
@@ -81,7 +81,7 @@ exports.deleteCart = async(req, res) => {
     
 	if(cart.products.length <= 1){
 		await cart.deleteOne({user_id})
-		return res.status(200).json({message: "Cart is empty therefore deleted."})
+		return res.status(200).json({message: "Cart deleted successfully."})
 	}
 	else{
 	const product = cart.products.filter(
@@ -89,7 +89,7 @@ exports.deleteCart = async(req, res) => {
 		)
 	cart.products=product
 	await cart.save();
-	res.status(200).json({message: "Product deleted successfully"})
+	res.status(200).json({message: "Product deleted from cart successfully"})
 	}
 } catch(error) {
 	res.status(500).json({message: "Server Error"})
